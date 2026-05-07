@@ -25,11 +25,19 @@ import { cn, formatPriceTHB } from '@/lib/utils'
 export function AdminProductsPage() {
   const [params, setParams] = useSearchParams()
   const [q, setQ] = useState('')
+  // Debounced version of `q` — only this hits the query and the URL, so
+  // every keystroke doesn't spawn a new network request and a new cache key.
+  const [debouncedQ, setDebouncedQ] = useState('')
   const [active, setActive] = useState<'' | 'true' | 'false'>('')
   const [categoryId, setCategoryId] = useState('')
   const [lowStockOnly, setLowStockOnly] = useState(
     params.get('lowStock') === 'true',
   )
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedQ(q.trim()), 300)
+    return () => clearTimeout(t)
+  }, [q])
 
   // Read URL param once on mount
   useEffect(() => {
@@ -49,7 +57,7 @@ export function AdminProductsPage() {
 
   const { data: cats } = useAdminCategories()
   const { data: products, isPending } = useAdminProducts({
-    q: q || undefined,
+    q: debouncedQ || undefined,
     active: active || undefined,
     categoryId: categoryId || undefined,
     lowStock: lowStockOnly ? 'true' : undefined,

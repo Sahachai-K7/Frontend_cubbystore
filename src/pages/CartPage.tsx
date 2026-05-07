@@ -240,7 +240,7 @@ export function CartPage() {
                 <form onSubmit={onApplyPromo} className="flex gap-2">
                   <Input
                     value={promoInput}
-                    onChange={(e) => setPromoInput(e.target.value.toUpperCase())}
+                    onChange={(e) => setPromoInput(e.target.value)}
                     placeholder="ใส่โค้ดส่วนลด"
                     className="font-mono text-xs"
                   />
@@ -271,13 +271,13 @@ export function CartPage() {
               <Button
                 className="w-full"
                 size="lg"
-                disabled={checkoutMut.isPending || empty}
+                disabled={checkoutMut.isPending || empty || insufficient}
                 onClick={onCheckout}
               >
                 {checkoutMut.isPending
                   ? 'กำลังประมวลผล…'
                   : insufficient
-                    ? 'หักจากกระเป๋า (ยอดไม่พอ)'
+                    ? 'ยอดในกระเป๋าไม่พอ'
                     : 'ยืนยันการชำระเงิน'}
               </Button>
               {insufficient && (

@@ -175,7 +175,7 @@ function DeliveredEmailMock() {
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium">CubbyStore</p>
             <p className="truncate text-xs text-muted-foreground">
-              noreply@cubbystore.dev · ตอนนี้
+              noreply@k4ecubby.dev · ตอนนี้
             </p>
           </div>
           <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-700 dark:text-emerald-400">
