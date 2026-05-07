@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { CheckCircle2, XCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { useSession } from '@/lib/auth-client'
+import { cn } from '@/lib/utils'
 
 export function EmailVerifiedPage() {
   const navigate = useNavigate()
@@ -38,12 +39,15 @@ export function EmailVerifiedPage() {
               รหัส: <code>{error}</code>
             </p>
             <div className="flex gap-2 pt-2">
-              <Button asChild variant="outline">
-                <Link to="/login">เข้าสู่ระบบ</Link>
-              </Button>
-              <Button asChild>
-                <Link to="/">หน้าแรก</Link>
-              </Button>
+              <Link
+                to="/login"
+                className={cn(buttonVariants({ variant: 'outline' }))}
+              >
+                เข้าสู่ระบบ
+              </Link>
+              <Link to="/" className={cn(buttonVariants())}>
+                หน้าแรก
+              </Link>
             </div>
           </CardContent>
         </Card>
@@ -66,11 +70,12 @@ export function EmailVerifiedPage() {
           <p className="text-xs text-muted-foreground">
             ระบบจะพาคุณไปที่{session ? 'หน้าแรก' : 'หน้าเข้าสู่ระบบ'}อัตโนมัติใน 4 วินาที…
           </p>
-          <Button asChild className="mt-2">
-            <Link to={session ? '/' : '/login'}>
-              {session ? 'ไปหน้าแรก' : 'เข้าสู่ระบบ'}
-            </Link>
-          </Button>
+          <Link
+            to={session ? '/' : '/login'}
+            className={cn(buttonVariants(), 'mt-2')}
+          >
+            {session ? 'ไปหน้าแรก' : 'เข้าสู่ระบบ'}
+          </Link>
         </CardContent>
       </Card>
     </div>
