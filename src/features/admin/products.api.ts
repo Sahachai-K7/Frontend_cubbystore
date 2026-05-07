@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/api'
-import { API_BASE_URL } from '@/lib/env'
 import type { AdminProduct } from '@/lib/types'
 
 const LIST_KEY = ['admin', 'products'] as const
@@ -87,16 +86,16 @@ export function useDeleteProduct() {
 export function useUploadProductImage() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async ({ id, file }: { id: string; file: File }) => {
+    mutationFn: ({ id, file }: { id: string; file: File }) => {
       const fd = new FormData()
       fd.set('image', file)
-      const res = await fetch(`${API_BASE_URL}/api/admin/products/${id}/image`, {
-        method: 'PUT',
-        credentials: 'include',
-        body: fd,
-      })
-      if (!res.ok) throw new Error(`upload_failed:${res.status}`)
-      return (await res.json()) as { item: AdminProduct }
+      // Go through the shared api wrapper so backend error codes
+      // (image_too_large, unsupported_image_type) surface as ApiError
+      // with a structured body instead of a generic upload_failed:413.
+      return api.putForm<{ item: AdminProduct }>(
+        `/api/admin/products/${id}/image`,
+        fd,
+      )
     },
     onSuccess: (_, vars) => {
       qc.invalidateQueries({ queryKey: LIST_KEY })

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Trash2, Upload } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -8,7 +8,14 @@ import {
   useDeleteProductImage,
 } from '@/features/admin/products.api'
 import { resolveImageUrl } from '@/lib/env'
+import { ApiError } from '@/lib/api'
 import type { AdminProduct } from '@/lib/types'
+
+const UPLOAD_ERROR_LABEL: Record<string, string> = {
+  image_too_large: 'ไฟล์ใหญ่เกิน 2MB',
+  unsupported_image_type: 'รองรับเฉพาะ JPG / PNG / WebP',
+  s3_storage_not_configured: 'ระบบเก็บรูปยังไม่พร้อม — แจ้งผู้ดูแล',
+}
 
 export function ProductImageUploader({ product }: { product: AdminProduct }) {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -16,13 +23,30 @@ export function ProductImageUploader({ product }: { product: AdminProduct }) {
   const uploadMut = useUploadProductImage()
   const deleteMut = useDeleteProductImage()
 
+  // Free the previous blob URL when the preview changes / component unmounts.
+  // Otherwise each pick leaks until the page is closed.
+  useEffect(() => {
+    if (!preview) return
+    return () => URL.revokeObjectURL(preview)
+  }, [preview])
+
   const onPick = async (file: File) => {
     setPreview(URL.createObjectURL(file))
     try {
       await uploadMut.mutateAsync({ id: product.id, file })
       toast.success('อัปโหลดรูปแล้ว')
     } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : 'อัปโหลดไม่สำเร็จ')
+      const code =
+        err instanceof ApiError &&
+        err.body &&
+        typeof err.body === 'object' &&
+        'error' in err.body
+          ? String((err.body as { error: unknown }).error).split(':')[0]
+          : null
+      toast.error(
+        (code && UPLOAD_ERROR_LABEL[code ?? '']) ??
+          (err instanceof Error ? err.message : 'อัปโหลดไม่สำเร็จ'),
+      )
     } finally {
       setPreview(null)
       if (inputRef.current) inputRef.current.value = ''
