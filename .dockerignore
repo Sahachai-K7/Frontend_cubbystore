@@ -1,0 +1,20 @@
+node_modules
+dist
+dist-ssr
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+.vscode
+.idea
+.DS_Store
+
+# build artefacts
+*.tsbuildinfo
+*.log
+coverage
+
+# docs (kept out of image)
+README.md
+*.md
