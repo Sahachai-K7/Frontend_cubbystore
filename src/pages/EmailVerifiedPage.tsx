@@ -9,18 +9,22 @@ import { cn } from '@/lib/utils'
 export function EmailVerifiedPage() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
 
   // Better-Auth appends ?error=... when verification fails (expired token, etc.)
   const error = params.get('error')
 
   useEffect(() => {
     if (error) return
+    // Wait until better-auth has resolved whether we're signed in. Bouncing
+    // before that races the cookie set on the API domain — we'd send the
+    // user to /login even though they're already authenticated.
+    if (isPending) return
     const t = setTimeout(() => {
       navigate(session ? '/' : '/login', { replace: true })
     }, 4000)
     return () => clearTimeout(t)
-  }, [error, navigate, session])
+  }, [error, isPending, navigate, session])
 
   if (error) {
     return (
