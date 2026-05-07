@@ -17,7 +17,7 @@ const SAMPLE = `[
     "description": "พร้อมสกินหายาก",
     "price": 299,
     "isActive": true,
-    "imageUrl": "/uploads/products/abc.jpg",
+    "imageUrl": "https://images.k4ecubby.dev/products/abc.jpg",
     "payloads": [
       "acc1@example.com:pass1",
       "acc2@example.com:pass2"

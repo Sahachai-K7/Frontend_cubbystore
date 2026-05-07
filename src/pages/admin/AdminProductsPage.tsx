@@ -19,7 +19,7 @@ import {
 } from '@/features/admin/products.api'
 import { useAdminCategories } from '@/features/admin/categories.api'
 import { ApiError } from '@/lib/api'
-import { API_BASE_URL } from '@/lib/env'
+import { resolveImageUrl } from '@/lib/env'
 import { cn, formatPriceTHB } from '@/lib/utils'
 
 export function AdminProductsPage() {
@@ -165,7 +165,7 @@ export function AdminProductsPage() {
                   render: (p) =>
                     p.imageUrl ? (
                       <img
-                        src={`${API_BASE_URL}${p.imageUrl}`}
+                        src={resolveImageUrl(p.imageUrl)}
                         alt=""
                         className="h-10 w-10 rounded object-cover"
                       />

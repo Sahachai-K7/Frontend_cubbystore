@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Badge } from '@/components/ui/badge'
 import { Stars } from '@/components/Stars'
-import { API_BASE_URL } from '@/lib/env'
+import { resolveImageUrl } from '@/lib/env'
 import { formatPriceTHB } from '@/lib/utils'
 import type { ProductListItem } from '@/lib/types'
 
@@ -16,7 +16,7 @@ export function ProductCard({ product }: { product: ProductListItem }) {
       <div className="relative aspect-[4/3] w-full bg-muted/30">
         {product.imageUrl ? (
           <img
-            src={`${API_BASE_URL}${product.imageUrl}`}
+            src={resolveImageUrl(product.imageUrl)}
             alt={product.name}
             className="h-full w-full object-cover transition-transform group-hover:scale-105"
             loading="lazy"

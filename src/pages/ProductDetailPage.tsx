@@ -10,7 +10,7 @@ import { usePublicProduct } from '@/features/catalog/public.api'
 import { useAddToCart } from '@/features/cart/cart.api'
 import { useSession } from '@/lib/auth-client'
 import { ApiError } from '@/lib/api'
-import { API_BASE_URL } from '@/lib/env'
+import { resolveImageUrl } from '@/lib/env'
 import { formatPriceTHB } from '@/lib/utils'
 
 export function ProductDetailPage() {
@@ -109,7 +109,7 @@ export function ProductDetailPage() {
         <div className="overflow-hidden rounded-lg border bg-muted/30">
           {product.imageUrl ? (
             <img
-              src={`${API_BASE_URL}${product.imageUrl}`}
+              src={resolveImageUrl(product.imageUrl)}
               alt={product.name}
               className="aspect-square w-full object-cover"
             />

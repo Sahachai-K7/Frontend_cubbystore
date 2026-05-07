@@ -16,7 +16,7 @@ import {
 import { useValidatePromo } from '@/features/admin/promo.api'
 import { useWallet } from '@/features/wallet/wallet.api'
 import { ApiError } from '@/lib/api'
-import { API_BASE_URL } from '@/lib/env'
+import { resolveImageUrl } from '@/lib/env'
 import { formatPriceTHB } from '@/lib/utils'
 import type { PromoValidation } from '@/lib/types'
 
@@ -121,7 +121,7 @@ export function CartPage() {
                     <div key={line.productId} className="flex gap-3 p-3">
                       {line.imageUrl ? (
                         <img
-                          src={`${API_BASE_URL}${line.imageUrl}`}
+                          src={resolveImageUrl(line.imageUrl)}
                           alt=""
                           className="h-20 w-20 rounded object-cover"
                         />

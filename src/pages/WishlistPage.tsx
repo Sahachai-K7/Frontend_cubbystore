@@ -8,7 +8,7 @@ import {
   useRemoveWishlist,
   useWishlist,
 } from '@/features/wishlist/wishlist.api'
-import { API_BASE_URL } from '@/lib/env'
+import { resolveImageUrl } from '@/lib/env'
 import { cn, formatPriceTHB } from '@/lib/utils'
 
 export function WishlistPage() {
@@ -63,7 +63,7 @@ export function WishlistPage() {
                   >
                     {w.imageUrl ? (
                       <img
-                        src={`${API_BASE_URL}${w.imageUrl}`}
+                        src={resolveImageUrl(w.imageUrl)}
                         alt=""
                         className="h-full w-full object-cover"
                       />

@@ -7,7 +7,7 @@ import {
   useUploadProductImage,
   useDeleteProductImage,
 } from '@/features/admin/products.api'
-import { API_BASE_URL } from '@/lib/env'
+import { resolveImageUrl } from '@/lib/env'
 import type { AdminProduct } from '@/lib/types'
 
 export function ProductImageUploader({ product }: { product: AdminProduct }) {
@@ -39,7 +39,7 @@ export function ProductImageUploader({ product }: { product: AdminProduct }) {
     }
   }
 
-  const currentSrc = preview ?? (product.imageUrl ? `${API_BASE_URL}${product.imageUrl}` : null)
+  const currentSrc = preview ?? (product.imageUrl ? resolveImageUrl(product.imageUrl) : null)
 
   return (
     <Card>
