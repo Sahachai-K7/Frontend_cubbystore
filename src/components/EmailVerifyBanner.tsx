@@ -18,7 +18,7 @@ export function EmailVerifyBanner({ className }: { className?: string }) {
     try {
       const res = await authClient.sendVerificationEmail({
         email: u.email,
-        callbackURL: window.location.origin,
+        callbackURL: new URL('/email-verified', window.location.origin).toString(),
       })
       if (res.error) throw new Error(res.error.message ?? 'send_failed')
       toast.success(`ส่ง email ยืนยันไปที่ ${u.email} แล้ว`)

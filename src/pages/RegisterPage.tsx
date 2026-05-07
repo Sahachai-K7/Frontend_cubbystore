@@ -32,6 +32,7 @@ export function RegisterPage() {
       email: data.email,
       password: data.password,
       name: data.name,
+      callbackURL: new URL('/email-verified', window.location.origin).toString(),
     })
     if (res.error) {
       setServerError(res.error.message ?? 'สมัครสมาชิกไม่สำเร็จ')

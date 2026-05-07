@@ -44,6 +44,11 @@ const TermsPage = lazy(() =>
 const FaqPage = lazy(() =>
   import('@/pages/FaqPage').then((m) => ({ default: m.FaqPage })),
 )
+const EmailVerifiedPage = lazy(() =>
+  import('@/pages/EmailVerifiedPage').then((m) => ({
+    default: m.EmailVerifiedPage,
+  })),
+)
 
 // Lazy-load all admin pages — admins are < 5% of users so split entire bundle
 const AdminDashboardPage = lazy(() =>
@@ -224,6 +229,7 @@ export const router = createBrowserRouter([
       { path: 'privacy', element: withSuspense(<PrivacyPage />) },
       { path: 'terms', element: withSuspense(<TermsPage />) },
       { path: 'faq', element: withSuspense(<FaqPage />) },
+      { path: 'email-verified', element: withSuspense(<EmailVerifiedPage />) },
       {
         element: <RequireAuth />,
         children: [
